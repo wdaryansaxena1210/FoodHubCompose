@@ -24,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -127,11 +128,16 @@ fun AuthScreen() {
                 .padding(16.dp)
         ) {
 
-            Text("sign in with",
-                color = Color.White,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth(),
-                fontSize = 16.sp)
+
+            Row(modifier = Modifier.fillMaxWidth()) {
+                Spacer(modifier = Modifier.weight(1f).height(1.dp).background(Color.White.copy(alpha = 0.7f)).align(Alignment.CenterVertically))
+                Text("sign in with",
+                    color = Color.White,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth().weight(1f),
+                    fontSize = 20.sp)
+                Spacer(modifier = Modifier.weight(1f).height(1.dp).background(Color.White.copy(alpha = 0.7f)).align(Alignment.CenterVertically))
+            }
 
             Spacer(Modifier.height(16.dp))
 
