@@ -1,12 +1,16 @@
 package com.example.foodhub_android.ui.features.auth.signup
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.foodhub_android.data.FoodApi
+import com.example.foodhub_android.data.models.SignUpRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -37,12 +41,34 @@ class SignUpViewModel @Inject constructor(val foodApi : FoodApi) : ViewModel(){
         _name.value = name
     }
 
-    fun onSignUPClick(){
-        _uiState.value = SignUpEvent.Loading
-        //perform sign-up
-        _uiState.value = SignUpEvent.Success
-        _navigationEvent.tryEmit(SignUpNavigationEvent.NavigateToHome)
+    //trigger SignUpEvent(s)
+    fun onSignUpClick(){
 
+        viewModelScope.launch {
+            _uiState.value = SignUpEvent.Loading
+
+            try{
+                val response = foodApi.signUp(
+                    SignUpRequest(
+                        email = _email.value,
+                        password = _password.value,
+                        name = _name.value
+                    )
+                )
+
+                if (response.token.isNotEmpty()){
+                    _uiState.value = SignUpEvent.Success
+                    _navigationEvent.tryEmit(SignUpNavigationEvent.NavigateToHome)
+//                    println("changed to error cuz token not empty")
+                }
+            }catch (e : Exception){
+                e.printStackTrace()
+                _uiState.value = SignUpEvent.Error
+//                println("changed to error in exception")
+            }
+//            _uiState.value = SignUpEvent.Success
+            _navigationEvent.emit(SignUpNavigationEvent.NavigateToHome)
+        }
     }
 
     sealed class SignUpNavigationEvent{

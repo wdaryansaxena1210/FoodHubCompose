@@ -59,12 +59,16 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    //lifecycle aware components
+    implementation(libs.androidx.lifecycle.runtime.compose)
+
     //Splash Screen
     implementation(libs.core.splashscreen)
 
     //hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
 
     //retrofit
     implementation(libs.retrofit)
