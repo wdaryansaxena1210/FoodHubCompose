@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.foodhub_android.data.FoodApi
 import com.example.foodhub_android.data.models.SignUpRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -13,6 +12,14 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/*
+NOTE: this viewModel does not CAUSE navigation (as it does not have a navController).
+Here is the workflow of navigation:
+1. we have a FLOW called navigationEvent
+2. this vm asks the Composables to collect/listen to the navigationEvent FLOW. When a
+navigationEvent is collected inside a composable, the composable can do NavController.navigate(sumn)
+(as the composable has access to the navController)
+ */
 @HiltViewModel
 class SignUpViewModel @Inject constructor(val foodApi : FoodApi) : ViewModel(){
 
@@ -58,7 +65,7 @@ class SignUpViewModel @Inject constructor(val foodApi : FoodApi) : ViewModel(){
 
                 if (response.token.isNotEmpty()){
                     _uiState.value = SignUpEvent.Success
-                    _navigationEvent.tryEmit(SignUpNavigationEvent.NavigateToHome)
+                    _navigationEvent.emit(SignUpNavigationEvent.NavigateToHome)
 //                    println("changed to error cuz token not empty")
                 }
             }catch (e : Exception){
@@ -67,9 +74,16 @@ class SignUpViewModel @Inject constructor(val foodApi : FoodApi) : ViewModel(){
 //                println("changed to error in exception")
             }
 //            _uiState.value = SignUpEvent.Success
-            _navigationEvent.emit(SignUpNavigationEvent.NavigateToHome)
+//            _navigationEvent.emit(SignUpNavigationEvent.NavigateToHome)
         }
     }
+
+    fun onLoginClick() {
+        viewModelScope.launch {
+            _navigationEvent.emit(SignUpNavigationEvent.NavigateToLogin)
+        }
+    }
+
 
     sealed class SignUpNavigationEvent{
         object NavigateToLogin : SignUpNavigationEvent()

@@ -1,4 +1,4 @@
-package com.example.foodhub_android.ui.features.auth.signup
+package com.example.foodhub_android.ui.features.auth.signin
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.tween
@@ -51,14 +51,15 @@ import com.example.foodhub_android.ui.GroupSocialButtons
 import com.example.foodhub_android.ui.navigation.AuthScreen
 import com.example.foodhub_android.ui.navigation.Home
 import com.example.foodhub_android.ui.navigation.Login
+import com.example.foodhub_android.ui.navigation.SignUp
 import com.example.foodhub_android.ui.theme.Orange
 import kotlinx.coroutines.flow.collectLatest
 
 
 
 @Composable
-fun SignUpScreen(navController: NavController, viewModel: SignUpViewModel = hiltViewModel()) {
-    val name: State<String> = viewModel.name.collectAsStateWithLifecycle()
+fun SignInScreen(navController: NavController, viewModel: SignInViewModel = hiltViewModel()) {
+
     val email = viewModel.email.collectAsStateWithLifecycle()
     val password = viewModel.password.collectAsStateWithLifecycle()
 
@@ -66,6 +67,7 @@ fun SignUpScreen(navController: NavController, viewModel: SignUpViewModel = hilt
     val errorMessage = remember { mutableStateOf<String?>(null) }
     val isLoading = remember { mutableStateOf(false) }
 
+    val context = LocalContext.current
 
     //uiState is a StateFlow hence always has a 'value' property.
     //below acts as a 'collector' (sharedFlow.collect{}) for a StateFlow
@@ -73,12 +75,12 @@ fun SignUpScreen(navController: NavController, viewModel: SignUpViewModel = hilt
     //BUT SharedFlow is implemented by storing the 'collector-lambda' in an array and when you run
     //"emit", we iterate through the array and call each 'collector-lambda'
     when (uiState.value) {
-        is SignUpViewModel.SignUpEvent.Error -> {
+        is SignInViewModel.SignInEvent.Error -> {
             isLoading.value = false
             errorMessage.value = "Something went wrong"
         }
 
-        is SignUpViewModel.SignUpEvent.Loading -> {
+        is SignInViewModel.SignInEvent.Loading -> {
             isLoading.value = true
             errorMessage.value = null
         }
@@ -91,25 +93,26 @@ fun SignUpScreen(navController: NavController, viewModel: SignUpViewModel = hilt
         }
     }
 
-    val context = LocalContext.current
-
-
     //attach a collector to navigationEvent so we know when some event is emitted/fired
+    /*
+    NOTE:
+    UiState is a stateful variable WHEREAS
+    navigationEvent is actually a Hot-Flow that emits irrespective of collectors (is a stateless variable,
+    fire-and-forget).
+     */
     LaunchedEffect(true) {
         viewModel.navigationEvent.collectLatest {
             when (it) {
-                is SignUpViewModel.SignUpNavigationEvent.NavigateToHome -> {
+                is SignInViewModel.SignInNavigationEvent.NavigateToHome -> {
                     navController.navigate(Home){
-                        popUpTo(AuthScreen){
+                        popUpTo(Login){
                             inclusive= true
                         }
                     }
                 }
-
-                is SignUpViewModel.SignUpNavigationEvent.NavigateToLogin -> {
-                    //navigate to login
-                    navController.navigate(Login)
-
+                is SignInViewModel.SignInNavigationEvent.NavigateToSignUp -> {
+                    //navigate to signup
+                    navController.navigate(SignUp)
                 }
             }
         }
@@ -150,21 +153,6 @@ fun SignUpScreen(navController: NavController, viewModel: SignUpViewModel = hilt
 
 
         //Full Name and everything below it
-
-        FoodHubTextField(
-            value = name.value,
-            onValueChange = { viewModel.onNameChange(it) },
-            label = {
-                Text(
-                    text = stringResource(R.string.full_Name),
-                    fontSize = 16.sp,
-                    color = Color.Gray,
-                )
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 16.dp),
-        )
 
         FoodHubTextField(
             value = email.value,
@@ -209,7 +197,7 @@ fun SignUpScreen(navController: NavController, viewModel: SignUpViewModel = hilt
         }
 
         Button(
-            onClick = viewModel::onSignUpClick,
+            onClick = viewModel::onSignInClick,
             colors = ButtonDefaults.buttonColors(containerColor = Orange),
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
@@ -234,7 +222,7 @@ fun SignUpScreen(navController: NavController, viewModel: SignUpViewModel = hilt
                         )
                     } else {
                         Text(
-                            text = stringResource(R.string.sign_up),
+                            text = stringResource(R.string.login),
                             modifier = Modifier.padding(horizontal = 32.dp)
                         )
                     }
@@ -243,7 +231,7 @@ fun SignUpScreen(navController: NavController, viewModel: SignUpViewModel = hilt
         }
         Spacer(modifier = Modifier.size(16.dp))
         Text(
-            text = stringResource(R.string.already_have_account),
+            text = "Dont have an account? Sign-Up",
             style = TextStyle(letterSpacing = 1.sp),
             modifier = Modifier
                 .padding(bottom = 16.dp)
@@ -255,12 +243,13 @@ fun SignUpScreen(navController: NavController, viewModel: SignUpViewModel = hilt
                 .padding(16.dp)
                 .background(Color.Black)
         )
-        GroupSocialButtons(onFacebookClick = { }, onGoogleClick = { }, color = Color.Black)
+
+        GroupSocialButtons(onFacebookClick = { }, onGoogleClick = { viewModel.onGoogleSignInClick(context) }, color = Color.Black)
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun SignUpScreenPreview(modifier: Modifier = Modifier) {
-    SignUpScreen(rememberNavController())
+fun SignInScreenPreview(modifier: Modifier = Modifier) {
+    SignInScreen(rememberNavController())
 }

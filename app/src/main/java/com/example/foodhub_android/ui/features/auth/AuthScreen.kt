@@ -30,15 +30,20 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.foodhub_android.R
+import com.example.foodhub_android.ui.navigation.Login
+import com.example.foodhub_android.ui.navigation.SignUp
 import com.example.foodhub_android.ui.theme.Orange
 
 @Composable
-fun AuthScreen() {
+fun AuthScreen(navController: NavController) {
 
     val imageSize = remember {
         mutableStateOf(IntSize.Zero)
@@ -46,11 +51,8 @@ fun AuthScreen() {
 
     val brush = Brush.verticalGradient(
         colors = listOf(
-            Color.Transparent,
-            Color.Black
-        ),
-        startY = imageSize.value.height.toFloat() / 3,
-        endY = 3000f
+            Color.Transparent, Color.Black
+        ), startY = imageSize.value.height.toFloat() / 3, endY = 3000f
     )
 
 
@@ -84,8 +86,7 @@ fun AuthScreen() {
                 .padding(8.dp)
         ) {
             Text(
-                text = stringResource(id = R.string.skip),
-                color = Orange
+                text = stringResource(id = R.string.skip), color = Orange
             )
         }
 
@@ -175,17 +176,21 @@ fun AuthScreen() {
             }
             Spacer(modifier = Modifier.padding(4.dp))
             Button(
-                onClick = {},
+                onClick = {navController.navigate(SignUp)},
                 colors = ButtonDefaults.buttonColors(containerColor = Color.Gray.copy(alpha = 0.2f)),
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(32.dp),
                 border = BorderStroke(1.dp, Color.White)
             ) {
-
                 Text(text = stringResource(R.string.sign_with_email), color = Color.White)
             }
-            TextButton(onClick = {}) {
-                Text(text = stringResource(R.string.aleady_have_account), color = Color.White)
+            TextButton(onClick = {navController.navigate(Login)}) {
+                Text(
+                    text = stringResource(R.string.already_have_account),
+                    color = Color.White,
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
             }
         }
     }
@@ -194,5 +199,5 @@ fun AuthScreen() {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun AuthScreenPreview() {
-    AuthScreen()
+    AuthScreen(rememberNavController())
 }

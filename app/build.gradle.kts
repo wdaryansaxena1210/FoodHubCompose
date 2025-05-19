@@ -4,6 +4,12 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
+
+
+    //serialization
+    //uncomment below and add the second commented plugin instead
+    kotlin("plugin.serialization") version "2.1.20"
+    //id("org.jetbrains.kotlin.plugin.serialization") version "1.9.10"
 }
 
 android {
@@ -59,9 +65,6 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    //lifecycle aware components
-    implementation(libs.androidx.lifecycle.runtime.compose)
-
     //Splash Screen
     implementation(libs.core.splashscreen)
 
@@ -75,8 +78,24 @@ dependencies {
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
 
+    //compose navigation
+    implementation(libs.androidx.navigation.compose)
+
+    //lifecycle aware components
+    implementation(libs.androidx.lifecycle.runtime.compose)
+
+    //serialization
+    implementation(libs.kotlinx.serialization.json)
+
+    //credentials?
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play.services.auth)
+    implementation(libs.googleid)
+
 }
 // Allow references to generated code
 kapt {
     correctErrorTypes = true
 }
+
+//keytool -keystore path-to-debug-or-production-keystore -list -v
