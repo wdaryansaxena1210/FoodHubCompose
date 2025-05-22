@@ -92,6 +92,10 @@ dependencies {
     implementation(libs.androidx.credentials.play.services.auth)
     implementation(libs.googleid)
 
+    //coil (library for images)
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
+
 }
 // Allow references to generated code
 kapt {

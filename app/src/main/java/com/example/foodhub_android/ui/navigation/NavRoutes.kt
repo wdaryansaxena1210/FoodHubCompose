@@ -13,3 +13,11 @@ object Home
 
 @Serializable
 object AuthScreen
+
+@Serializable
+data class RestaurantDetails(
+    val restaurantId: String,
+    val name : String,
+    val restaurantImageUrl : String,
+//    val restaurantDescription: String
+)

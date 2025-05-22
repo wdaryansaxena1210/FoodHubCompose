@@ -6,6 +6,7 @@ import androidx.credentials.CredentialManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.foodhub_android.data.FoodApi
+import com.example.foodhub_android.data.FoodHubSession
 import com.example.foodhub_android.data.auth.GoogleAuthUiProvider
 import com.example.foodhub_android.data.models.OAuthRequest
 import com.example.foodhub_android.data.models.SignInRequest
@@ -20,7 +21,7 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class SignInViewModel @Inject constructor(val foodApi : FoodApi) : ViewModel(){
+class SignInViewModel @Inject constructor(val foodApi : FoodApi, val foodHubSession: FoodHubSession) : ViewModel(){
 
     val googleAuthUiProvider = GoogleAuthUiProvider()
 
@@ -59,6 +60,7 @@ class SignInViewModel @Inject constructor(val foodApi : FoodApi) : ViewModel(){
                 )
 
                 if (response.token.isNotEmpty()){
+                    foodHubSession.storeToken(token = response.token)
                     _uiState.value = SignInEvent.Success
                     _navigationEvent.emit(SignInNavigationEvent.NavigateToHome)
 //                    println("changed to error cuz token not empty")
@@ -96,6 +98,7 @@ class SignInViewModel @Inject constructor(val foodApi : FoodApi) : ViewModel(){
                 Log.d("SignInViewModel", "Sign in token after hitting /auth/oauth backend: ${res.token}")
 
                 if(res.token.isNotEmpty()){
+
                     _uiState.value = SignInEvent.Success
                     _navigationEvent.emit(SignInNavigationEvent.NavigateToHome)
                 }
