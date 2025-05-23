@@ -17,6 +17,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -60,13 +63,17 @@ fun RestaurantDetailsScreen(
 
     val uiState = viewModel.uiState.collectAsState()
 
-    LazyColumn(modifier = Modifier.fillMaxSize()) {
-        item {
+    LazyVerticalGrid(
+        GridCells.Fixed(2),
+        modifier = Modifier.fillMaxSize()
+    ) {
+        item(span = { GridItemSpan(2) } ) {
+
             RestaurantDetailsHeader(imageUrl = imageUrl, restaurantID = restaurantId,
 //                animatedVisibilityScope = animatedVisibilityScope,
                 onBackButton = { navController.popBackStack() }, onFavoriteButton = { })
         }
-        item {
+        item(span = { GridItemSpan(2) }) {
             RestaurantDetails(
                 title = name,
                 description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut purus eget sapien fermentum aliquam. Nullam nec nunc nec libero fermentum aliquam. Nullam nec nunc nec libero fermentum aliquam.",
@@ -92,18 +99,9 @@ fun RestaurantDetailsScreen(
                 val foodItems =
                     (uiState.value as RestaurantViewModel.RestaurantEvent.Success).foodItems
                 if (foodItems.isNotEmpty()) {
-                    items(foodItems.chunked(2)){rowItem ->
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceAround
-                        ) {
-                            if(rowItem.size == 1){
-                                FoodItemView(foodItem = rowItem.get(0), onClick = {})
-                                return@Row
-                            }
-                            FoodItemView(foodItem = rowItem.get(0), onClick = {})
-                            FoodItemView(foodItem = rowItem.get(1), onClick = {})
-                        }
+
+                    items(foodItems) { foodItem ->
+                        FoodItemView(foodItem = foodItem, {})
                     }
                 } else {
                     item {
@@ -123,6 +121,7 @@ fun RestaurantDetailsScreen(
         }
     }
 }
+
 
 @Composable
 fun RestaurantDetails(
@@ -232,6 +231,7 @@ fun FoodItemView(
     Column(
         modifier = Modifier
             .padding(8.dp)
+            .fillMaxWidth()
             .width(162.dp)
             .height(216.dp)
             .shadow(
@@ -253,12 +253,11 @@ fun FoodItemView(
                 model = foodItem.imageUrl, contentDescription = null,
                 modifier = Modifier
                     .fillMaxSize()
-                    .clip(RoundedCornerShape(16.dp))
+                    .clip(RoundedCornerShape(16.dp)),
 //                    .sharedElement(
 //                        state = rememberSharedContentState(key = "image/${footItem.id}"),
 //                        animatedVisibilityScope
 //                    ),
-                        ,
                 contentScale = ContentScale.Crop,
             )
             Text(
@@ -328,5 +327,6 @@ fun FoodItemView(
                 maxLines = 1
             )
         }
+
     }
 }

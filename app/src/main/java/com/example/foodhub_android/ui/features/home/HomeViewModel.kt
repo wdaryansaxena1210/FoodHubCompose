@@ -9,6 +9,7 @@ import com.example.foodhub_android.data.remote.ApiResponse
 import com.example.foodhub_android.data.remote.safeApiCall
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

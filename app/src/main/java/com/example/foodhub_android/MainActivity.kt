@@ -39,6 +39,8 @@ import com.example.foodhub_android.ui.navigation.RestaurantDetails
 import com.example.foodhub_android.ui.navigation.SignUp
 import com.example.foodhub_android.ui.theme.FoodHubAndroidTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -128,4 +130,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
+
 
