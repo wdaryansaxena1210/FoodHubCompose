@@ -12,16 +12,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CartViewModel @Inject constructor(): ViewModel() {
+    val _uiState = MutableStateFlow<CartUiState>(CartUiState.Loading)
+        
+    val uiState = _uiState.asStateFlow()
 
-    sealed class CartUiState(){
-
-        val _uiState = MutableStateFlow<CartUiState>(Loading)
-        val uiState = _uiState.asStateFlow()
-
-        val _event = MutableSharedFlow<CartEvent>()
-        val event = _event.asSharedFlow()
-
-
+    val _event = MutableSharedFlow<CartEvent>()
+    val event = _event.asSharedFlow()
 
         fun incrementQuantity(cartItem: CartItem) {
 //            if (cartItem.quantity == 5) {
@@ -82,7 +78,7 @@ class CartViewModel @Inject constructor(): ViewModel() {
 //            }
         }
 
-
+    sealed class CartUiState(){
         object Nothing : CartUiState()
         object Loading : CartUiState()
         data class Error(val message : String) : CartUiState()
