@@ -123,7 +123,7 @@ fun CategoryItem(category: Category, onCategorySelected: (Category) -> Unit) {
         horizontalAlignment = CenterHorizontally
     ) {
 
-        Log.d("HomeScreen", "CategoryItem: ${category.imageUrl}")
+//        Log.d("HomeScreen", "CategoryItem: ${category.imageUrl}")
         AsyncImage(
             model = category.imageUrl,
             contentDescription = null,

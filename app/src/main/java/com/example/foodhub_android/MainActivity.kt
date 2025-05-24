@@ -2,6 +2,7 @@ package com.example.foodhub_android
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -9,39 +10,34 @@ import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import coil3.compose.AsyncImage
-import coil3.compose.SubcomposeAsyncImage
 import com.example.foodhub_android.data.FoodApi
 import com.example.foodhub_android.data.FoodHubSession
+import com.example.foodhub_android.data.models.FoodItem
 import com.example.foodhub_android.ui.features.auth.AuthScreen
 import com.example.foodhub_android.ui.features.auth.signin.SignInScreen
 import com.example.foodhub_android.ui.features.auth.signup.SignUpScreen
+import com.example.foodhub_android.ui.features.food_item_details.FoodDetailsScreen
 import com.example.foodhub_android.ui.features.home.HomeScreen
 import com.example.foodhub_android.ui.features.restaurant_details.RestaurantDetailsScreen
 import com.example.foodhub_android.ui.navigation.AuthScreen
+import com.example.foodhub_android.ui.navigation.FoodDetails
 import com.example.foodhub_android.ui.navigation.Home
 import com.example.foodhub_android.ui.navigation.Login
 import com.example.foodhub_android.ui.navigation.RestaurantDetails
 import com.example.foodhub_android.ui.navigation.SignUp
+import com.example.foodhub_android.ui.navigation.foodItemNavType
 import com.example.foodhub_android.ui.theme.FoodHubAndroidTheme
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
+import kotlin.reflect.typeOf
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -61,6 +57,7 @@ class MainActivity : ComponentActivity() {
 
                     //FIXME : vulnerability. you should check in your backend if the non-null token is not a random text but a valid token
                     val startPoint = if (foodHubSession.getToken() != null) Home else AuthScreen
+                    Log.d("MainActivity", "startPoint: ${foodHubSession.getToken()}")
 
                     val navController = rememberNavController()
                     NavHost(
@@ -91,7 +88,6 @@ class MainActivity : ComponentActivity() {
                                 animationSpec = tween(300)
                             ) + fadeOut(animationSpec = tween(300))
                         }
-
                     ) {
                         composable<SignUp>() {
                             SignUpScreen(navController = navController)
@@ -115,6 +111,22 @@ class MainActivity : ComponentActivity() {
                             )
                         }
 
+                        composable<FoodDetails>(
+                            typeMap = mapOf(typeOf<FoodItem>() to foodItemNavType)
+                        ) {
+                            val route = it.toRoute<FoodDetails>()
+                            FoodDetailsScreen(
+                                navController = navController,
+                                foodItem = route.foodItem,
+                                onItemAddedToCart = {
+                                    Toast.makeText(
+                                        this@MainActivity,
+                                        "Item added to cart",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            )
+                        }
 
                         composable("test") {
 

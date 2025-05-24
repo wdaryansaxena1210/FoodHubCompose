@@ -1,6 +1,5 @@
 package com.example.foodhub_android.ui.features.restaurant_details
 
-import android.widget.GridView
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -15,12 +14,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -47,6 +44,8 @@ import androidx.navigation.NavController
 import coil3.compose.AsyncImage
 import com.example.foodhub_android.R
 import com.example.foodhub_android.data.models.FoodItem
+import com.example.foodhub_android.ui.features.food_item_details.FoodDetailsScreen
+import com.example.foodhub_android.ui.navigation.FoodDetails
 
 @Composable
 fun RestaurantDetailsScreen(
@@ -78,7 +77,7 @@ fun RestaurantDetailsScreen(
                 title = name,
                 description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut purus eget sapien fermentum aliquam. Nullam nec nunc nec libero fermentum aliquam. Nullam nec nunc nec libero fermentum aliquam.",
 //                animatedVisibilityScope = animatedVisibilityScope,
-                restaurantId = restaurantId
+                restaurantID = restaurantId
             )
         }
         when (uiState.value) {
@@ -101,7 +100,7 @@ fun RestaurantDetailsScreen(
                 if (foodItems.isNotEmpty()) {
 
                     items(foodItems) { foodItem ->
-                        FoodItemView(foodItem = foodItem, {})
+                        FoodItemView(foodItem = foodItem, {navController.navigate(FoodDetails(foodItem))})
                     }
                 } else {
                     item {
@@ -125,7 +124,7 @@ fun RestaurantDetailsScreen(
 
 @Composable
 fun RestaurantDetails(
-    title: String, description: String, restaurantId: String
+    title: String, description: String, restaurantID: String
 ) {
     Column(
         modifier = Modifier
