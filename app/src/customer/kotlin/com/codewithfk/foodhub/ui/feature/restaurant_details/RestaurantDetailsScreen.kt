@@ -1,4 +1,4 @@
-package com.example.foodhub_android.ui.features.restaurant_details
+package com.codewithfk.foodhub.ui.feature.restaurant_details
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -44,7 +44,7 @@ import androidx.navigation.NavController
 import coil3.compose.AsyncImage
 import com.example.foodhub_android.R
 import com.example.foodhub_android.data.models.FoodItem
-import com.example.foodhub_android.ui.features.food_item_details.FoodDetailsScreen
+import com.codewithfk.foodhub.ui.feature.food_item_details.FoodDetailsScreen
 import com.example.foodhub_android.ui.navigation.FoodDetails
 
 @Composable

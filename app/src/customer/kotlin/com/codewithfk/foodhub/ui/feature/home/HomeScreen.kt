@@ -1,4 +1,4 @@
-package com.example.foodhub_android.ui.features.home
+package com.codewithfk.foodhub.ui.feature.home
 
 import android.util.Log
 import androidx.compose.animation.AnimatedVisibilityScope
@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -160,7 +161,7 @@ fun RestaurantList(
             }
         }
     }
-    LazyRow {
+    LazyColumn(modifier = Modifier.fillMaxWidth())  {
         items(restaurants) {
             RestaurantItem(it, onRestaurantSelected)
         }
@@ -175,7 +176,8 @@ fun RestaurantItem(
     Box(
         modifier = Modifier
             .padding(8.dp)
-            .width(250.dp)
+//            .width(250.dp)
+            .fillMaxWidth()
             .height(229.dp)
             .shadow(16.dp, shape = RoundedCornerShape(16.dp))
             .background(Color.White)

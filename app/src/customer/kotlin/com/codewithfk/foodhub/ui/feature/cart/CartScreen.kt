@@ -1,4 +1,4 @@
-package com.example.foodhub_android.ui.features.cart
+package com.codewithfk.foodhub.ui.feature.cart
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -41,7 +41,7 @@ import coil3.compose.AsyncImage
 import com.example.foodhub_android.R
 import com.example.foodhub_android.data.models.CartItem
 import com.example.foodhub_android.data.models.CheckoutDetails
-import com.example.foodhub_android.ui.features.food_item_details.FoodItemCounter
+import com.codewithfk.foodhub.ui.feature.food_item_details.FoodItemCounter
 import kotlinx.coroutines.flow.collectLatest
 import java.text.NumberFormat
 

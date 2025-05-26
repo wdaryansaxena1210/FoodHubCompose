@@ -1,4 +1,4 @@
-package com.example.foodhub_android
+package com.codewithfk.foodhub.ui
 
 import android.os.Bundle
 import android.util.Log
@@ -24,10 +24,10 @@ import com.example.foodhub_android.data.models.FoodItem
 import com.example.foodhub_android.ui.features.auth.AuthScreen
 import com.example.foodhub_android.ui.features.auth.signin.SignInScreen
 import com.example.foodhub_android.ui.features.auth.signup.SignUpScreen
-import com.example.foodhub_android.ui.features.cart.CartScreen
-import com.example.foodhub_android.ui.features.food_item_details.FoodDetailsScreen
-import com.example.foodhub_android.ui.features.home.HomeScreen
-import com.example.foodhub_android.ui.features.restaurant_details.RestaurantDetailsScreen
+import com.codewithfk.foodhub.ui.feature.cart.CartScreen
+import com.codewithfk.foodhub.ui.feature.food_item_details.FoodDetailsScreen
+import com.codewithfk.foodhub.ui.feature.home.HomeScreen
+import com.codewithfk.foodhub.ui.feature.restaurant_details.RestaurantDetailsScreen
 import com.example.foodhub_android.ui.navigation.AuthScreen
 import com.example.foodhub_android.ui.navigation.Cart
 import com.example.foodhub_android.ui.navigation.FoodDetails

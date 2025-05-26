@@ -1,4 +1,4 @@
-package com.example.foodhub_android.ui.features.food_item_details
+package com.codewithfk.foodhub.ui.feature.food_item_details
 
 import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
@@ -48,8 +48,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.example.foodhub_android.R
 import com.example.foodhub_android.data.models.FoodItem
-import com.example.foodhub_android.ui.features.restaurant_details.RestaurantDetails
-import com.example.foodhub_android.ui.features.restaurant_details.RestaurantDetailsHeader
+import com.codewithfk.foodhub.ui.feature.restaurant_details.RestaurantDetails
+import com.codewithfk.foodhub.ui.feature.restaurant_details.RestaurantDetailsHeader
 import com.example.foodhub_android.ui.navigation.Cart
 import com.example.foodhub_android.ui.theme.FoodHubAndroidTheme
 import com.example.foodhub_android.ui.theme.Orange

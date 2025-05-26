@@ -42,6 +42,25 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+
+    flavorDimensions += "environment"
+
+    productFlavors{
+        create("customer"){
+            dimension = "environment"
+        }
+        create("restaurant"){
+            dimension = "environment"
+            applicationIdSuffix = ".restaurant"
+            resValue("string", "app_name", "FH Restaurant")
+        }
+
+        create("rider"){
+            dimension = "environment"
+            resValue("string", "app_name", "FH Rider")
+        }
+    }
+
     buildFeatures {
         compose = true
     }
