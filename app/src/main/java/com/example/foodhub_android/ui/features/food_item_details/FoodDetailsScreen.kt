@@ -50,6 +50,7 @@ import com.example.foodhub_android.R
 import com.example.foodhub_android.data.models.FoodItem
 import com.example.foodhub_android.ui.features.restaurant_details.RestaurantDetails
 import com.example.foodhub_android.ui.features.restaurant_details.RestaurantDetailsHeader
+import com.example.foodhub_android.ui.navigation.Cart
 import com.example.foodhub_android.ui.theme.FoodHubAndroidTheme
 import com.example.foodhub_android.ui.theme.Orange
 import com.example.foodhub_android.ui.theme.Typography
@@ -92,7 +93,7 @@ fun FoodDetailsScreen(
                 }
 
                 is FoodDetailsViewModel.FoodDetailsEvent.goToCart -> {
-//                    navController.navigate(Cart)
+                    navController.navigate(Cart)
                 }
 
                 else -> {}
@@ -198,13 +199,13 @@ fun FoodDetailsScreen(
                 Button(
                     onClick = {
                         showSuccessDialog.value = false
+                        viewModel.goToCart()
                     }, modifier = Modifier
                         .padding(horizontal = 16.dp)
                         .fillMaxWidth()
                 ) {
                     Text(text = "OK")
                 }
-
             }
         }
     }

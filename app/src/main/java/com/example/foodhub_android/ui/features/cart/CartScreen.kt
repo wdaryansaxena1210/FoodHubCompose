@@ -14,14 +14,20 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,11 +42,61 @@ import com.example.foodhub_android.R
 import com.example.foodhub_android.data.models.CartItem
 import com.example.foodhub_android.data.models.CheckoutDetails
 import com.example.foodhub_android.ui.features.food_item_details.FoodItemCounter
+import kotlinx.coroutines.flow.collectLatest
+import java.text.NumberFormat
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CartScreen(navController: NavController, viewModel: CartViewModel = hiltViewModel()) {
 
+
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
+    val showErrorDialog = remember { mutableStateOf(false)}
+
+    LaunchedEffect(key1 = true) {
+        viewModel.event.collectLatest {
+            when (it) {
+                is CartViewModel.CartEvent.onItemRemoveError,
+                is CartViewModel.CartEvent.onQuantityUpdateError,
+                is CartViewModel.CartEvent.showErrorDialog -> {
+                    showErrorDialog.value = true
+                }
+
+                is CartViewModel.CartEvent.onAddressClicked -> {
+//                    navController.navigate(AddressList)
+                }
+
+                is CartViewModel.CartEvent.OrderSuccess -> {
+//                    navController.navigate(OrderSuccess(it.orderId!!))
+                }
+
+//                is CartViewModel.CartEvent.OnInitiatePayment -> {
+//                    PaymentConfiguration.init(navController.context, it.data.publishableKey)
+//                    val customer = PaymentSheet.CustomerConfiguration(
+//                        it.data.customerId,
+//                        it.data.ephemeralKeySecret
+//                    )
+//                    val paymentSheetConfig = PaymentSheet.Configuration(
+//                        merchantDisplayName = "FoodHub",
+//                        customer = customer,
+//                        allowsDelayedPaymentMethods = false,
+//                    )
+//
+//                    // Initiate payment
+//
+//                    paymentSheet.presentWithPaymentIntent(
+//                        it.data.paymentIntentClientSecret,
+//                        paymentSheetConfig
+//                    )
+//                }
+
+                else -> {
+
+                }
+            }
+        }
+    }
+
     Column {
         CartHeaderView(onBack = { navController.popBackStack() })
         Spacer(modifier = Modifier.size(16.dp))
@@ -97,6 +153,20 @@ fun CartScreen(navController: NavController, viewModel: CartViewModel = hiltView
 
         }
 
+    }
+
+
+    if (showErrorDialog.value) {
+        ModalBottomSheet(onDismissRequest = { showErrorDialog.value = false }) {
+            Column (horizontalAlignment = Alignment.CenterHorizontally){
+                Text(text= viewModel.errorTitle, style = MaterialTheme.typography.headlineSmall )
+                Spacer(modifier = Modifier.size(8.dp))
+                Text(text= viewModel.errorMessage, style = MaterialTheme.typography.bodyMedium )
+                Button(onClick = { showErrorDialog.value = false }) {
+                    Text("OK")
+                }
+            }
+        }
     }
 }
 
@@ -197,8 +267,7 @@ fun CheckoutRowItem(title: String, value: Double, currency: String) {
             Text(text = title, style = MaterialTheme.typography.titleMedium)
             Spacer(modifier = Modifier.weight(1f))
             Text(
-//                text = StringUtils.formatCurrency(value),
-                text = value.toString(),
+                text = "$${NumberFormat.getCurrencyInstance().format(value)}",
                 style = MaterialTheme.typography.titleMedium
             )
             Text(

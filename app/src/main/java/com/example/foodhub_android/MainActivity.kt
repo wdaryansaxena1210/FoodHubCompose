@@ -29,6 +29,7 @@ import com.example.foodhub_android.ui.features.food_item_details.FoodDetailsScre
 import com.example.foodhub_android.ui.features.home.HomeScreen
 import com.example.foodhub_android.ui.features.restaurant_details.RestaurantDetailsScreen
 import com.example.foodhub_android.ui.navigation.AuthScreen
+import com.example.foodhub_android.ui.navigation.Cart
 import com.example.foodhub_android.ui.navigation.FoodDetails
 import com.example.foodhub_android.ui.navigation.Home
 import com.example.foodhub_android.ui.navigation.Login
@@ -63,7 +64,7 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     NavHost(
                         navController = navController,
-                        startDestination = "test",
+                        startDestination = startPoint,
                         modifier = Modifier.padding(innerPadding),
                         enterTransition = {
                             slideIntoContainer(
@@ -131,6 +132,10 @@ class MainActivity : ComponentActivity() {
 
                         composable("test") {
                             CartScreen(navController=navController)
+                        }
+                        composable<Cart>() {
+//                            shouldShowBottomNav.value = true
+                            CartScreen(navController)
                         }
 
                     }
