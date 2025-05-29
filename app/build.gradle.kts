@@ -12,6 +12,7 @@ plugins {
     //id("org.jetbrains.kotlin.plugin.serialization") version "1.9.10"
 }
 
+
 android {
     namespace = "com.example.foodhub_android"
     compileSdk = 35
@@ -22,8 +23,9 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        resValue("string", "google_maps_key", project.findProperty("GOOGLE_MAPS_API_KEY").toString())
+
     }
 
     buildTypes {
@@ -115,6 +117,8 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
 
+    //Google Maps
+    implementation(libs.android.maps.compose)
 }
 // Allow references to generated code
 kapt {

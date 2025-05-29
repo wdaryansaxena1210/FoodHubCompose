@@ -211,7 +211,7 @@ fun FoodHubTextField(
 @Composable
 fun FoodHubNavHost(
     navController: NavHostController,
-    startDestination: KClass<*>,
+    startDestination: Any,
     modifier: Modifier = Modifier,
     contentAlignment: Alignment = Alignment.TopStart,
     route: KClass<*>? = null,

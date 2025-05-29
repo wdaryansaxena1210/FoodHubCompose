@@ -28,3 +28,6 @@ data class FoodDetails(val foodItem: FoodItem)
 
 @Serializable
 object Cart
+
+@Serializable
+object Test
